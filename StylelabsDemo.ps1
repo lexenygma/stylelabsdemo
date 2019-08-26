@@ -1,7 +1,7 @@
-# TODO add credential get here ->
-$VMCredential = Get-Credential -Message 'Please enter the vm credentials'
-$VMConfig | New-NetFirewallRule –DisplayName “Allow ICMPv4-In” –Protocol ICMPv4
+# Script for creating a simple environment on Azure with x2 Windows machines.  
 
+# Get-Credential
+$VMCredential = Get-Credential -Message 'Please enter the vm credentials'
 
 #Create new resource group
 New-AzResourceGroup -Name Demo -Location "West Europe"
@@ -11,7 +11,7 @@ $virtualNetwork = New-AzVirtualNetwork `
   -ResourceGroupName Demo `
   -Location westeurope `
   -Name DemoNetwork `
-  -AddressPrefix 172.10.10.0/24
+  -AddressPrefix 172.10.10.0/24 `
 
 #Create new subnet 
 $subnetConfig = Add-AzVirtualNetworkSubnetConfig `
@@ -34,7 +34,6 @@ New-AzVm `
   -SubnetName "DemoSubnet" `
   -Name "myVm1" `
   -Credential $VMCredential `
-  -VM $VMConfig `
   -AsJob
 
 
@@ -45,5 +44,4 @@ New-AzVm `
   -VirtualNetworkName "DemoNetwork" `
   -SubnetName "DemoSubnet" `
   -Credential $VMCredential `
-  -VM $VMConfig `
   -Name "myVm2" `
